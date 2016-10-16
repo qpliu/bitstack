@@ -1,0 +1,88 @@
+For interviewing candidates for coding jobs, a series of simple
+exercises involving implementing stacks of bits.
+
+1. Ask how long it would take to implement a stack of bits.
+
+Any answer that implies that it would be quick is acceptable, including
+using existing libraries.
+
+If there are concerns about extraordinary circumstances, such as
+running out of memory or memory corruption due to cosmic radiation,
+the implementation does not need to address such circumstances.
+
+2. Ask for an implementation of a stack of bits, with the maximum
+required stack depth of two.
+
+The interface to be implemented:
+  empty: -> stack
+  push: stack,bit -> stack
+  pop: stack -> stack
+  peek: stack -> maybe bit
+
+If the candidate clearly knows what he or she is doing, this can be,
+for example, just a matter of he or she saying the stack is an enumeration
+(of 7 values), and the interface can be implemented as lookup tables.
+
+If the implementation needs more than 3 bits to represent the stack,
+discuss that the stack only needs to have 7 states.  Discuss that the
+stack only needs log 7 bits.
+
+Discuss pushing onto a full stack and popping an empty stack.
+My preference is an assertion failure/panic/exception thrown.
+
+3. Ask for an implementation of a stack of stacks of bits, given an
+implementation of a stack of bits (with no maximum stack depth).
+
+The interface to be implemented:
+  emptystack: -> stackstack
+  pushstack: stackstack,stack -> stackstack
+  popstack: stackstack -> stackstack
+  peek: stackstack -> maybe stack
+
+3a. Hint: Ask if the candidate is familiar with Protocol Buffers and
+its variable length encoding of unsigned integers.
+
+3b. Hint: Give the candidate a specification of how to encode a stack
+of bits as bits: encode a stack as: 1 [bottom bit] 1 [next to bottom
+bit] .... 1 [top bit] 0.
+
+4. Ask for an implementation of appending stacks.
+
+The suggested interface:
+  pushappendded: stack,stack,bit -> stack,stack
+  popappended: stack,stack -> stack,stack
+  peek: stack,stack -> maybe bit
+
+If the candidate implements it by reversing the first stack, then
+pushing it onto the second stack, suggest the suggested interface,
+because handling infinite stacks will be next.
+
+5. Ask for an implementation of a stack of stacks of bits, given lazy
+evaluation and an implementation of a stack of bits that can be appended,
+that can handle infinite stacks.
+
+The interface for appending stacks is:
+  append: stack,stack -> stack
+
+An example of an infinite stack: infiniteones = push infiniteones,1
+This should be a hint that recursion will be needed.
+
+An example of handling infinite stacks:
+  stack1 = push emptystack,empty
+  stack2 = push infiniteones,stack1
+  stack3 = pop stack2
+Then, peek stack3 should yield an empty stack of bits without taking an
+infinite amount of time.
+
+5a. Hint: Give the candidate a specification of how to encode a stack
+of bits in two stacks of bits.  The first stack of bits is the stack
+pointer, containing a bit for each stack in the stack of stacks.  The
+second stack of bits contains: 1 [top bit of the top stack] 1
+[top bit of the second stack] ... 1 [top bit of the bottom stack]
+1 [second bit of the top stack] 1 [second bit of the second stack] ...
+1 [second bit of the bottom stack] ...
+And if the stack is empty or of the bottom of the stack is reached,
+replace the 1 [next bit of the stack] with 0.
+
+Discuss optimizing out subsequent zeroes indicating an empty stack or
+the bottom of a stack.
