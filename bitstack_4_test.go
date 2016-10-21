@@ -37,3 +37,9 @@ func TestAppend4b(t *testing.T) {
 	stack2 := randomStack(BitStack1b_Empty, 40)
 	testAppendStacks(t, "TestAppend4b", Append4b, stack1, stack2)
 }
+
+func TestAppend4c(t *testing.T) {
+	stack1 := randomStack(BitStack1b_Empty, 20)
+	stack2 := randomStack(BitStack1b_Empty, 40)
+	testAppendStacks(t, "TestAppend4c", Append4c, stack1, stack2)
+}

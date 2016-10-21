@@ -38,3 +38,11 @@ func (stack append4b) Peek() MaybeBit {
 	}
 	return stack[0].Peek()
 }
+
+// Recursive stack append
+func Append4c(stack1, stack2 BitStack) BitStack {
+	if stack1.Peek().IsNil() {
+		return stack2
+	}
+	return Append4c(stack1.Pop(), stack2).Push(stack1.Peek().Bit())
+}
